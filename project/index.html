@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+	<html lang="en">
+<head>
+	    <style>
+    .logo {
+        width: 390px; /*      */
+        height: auto; 
+        margin-top: 20px;
+    }
+    <head>
+	    <style>
+    .go {
+        width: 380px; /*      */
+        height: auto; 
+        margin-top: 20px;
+    }
+</style>
+<img src="20250316_173530.png" alt="Logo" class="logo">
+ 
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dark Hack</title>
+  <style>
+    h2 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .dark-hack {
+      font-size: 45px; /*      */
+      font-weight: bold;
+      color: black;
+      margin: 10px;
+    }
+    img {
+      width: 50px;
+      height: 50px;
+    }
+    .logo {
+      width: 200px;
+      height: auto;
+      margin-top: 20px;
+    }
+    .go {
+      width: 150px;
+      height: auto;
+      margin-top: 20px;
+    }
+    .o {
+      width: 50px;
+      height: auto;
+      margin-top: 20px;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #333;
+      color: #FF0000;
+    }
+    input {
+      margin: 5px;
+      padding: 10px;
+      width: 250px;
+      font-size: 20px;
+      background: #222;
+      color: #0f0;
+      border: 2px solid #FF0000;
+      text-align: center;
+    }
+    .result-box {
+      font-size: 30px;
+      font-weight: bold;
+      padding: 20px;
+      border: 3px solid #ff0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 200px;
+      height: 50px;
+      margin: 20px auto;
+      background: #333;
+      color: #ff0;
+      box-shadow: 30px 10px 100px #FF0000;
+    }
+    .category-percentages {
+      font-size: 20px;
+      font-weight: normal;
+      color: #ff0;
+      padding: 20px;
+      background: #444;
+      margin: 20px auto;
+      width: 150px;
+      border: 2px solid #ff0;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="result-box" class="result-box">Result</div>
+
+  <span class="dark-hack">[D] dark-hack [N]</span>
+  <div id="category-percentages" class="category-percentages"></div>
+
+  <input type="number" id="input1" placeholder="Enter number 1" oninput="processData()">
+  <input type="number" id="input2" placeholder="Enter number 2" oninput="processData()">
+  <input type="number" id="input3" placeholder="Enter number 3" oninput="processData()">
+  <input type="number" id="input4" placeholder="Enter number 4" oninput="processData()">
+  <input type="number" id="input5" placeholder="Enter number 5" oninput="processData()">
+  <input type="number" id="input6" placeholder="Enter number 6" oninput="processData()">
+
+  <script>
+    var dataset = [];
+
+    fetch('data/dataset.json')
+      .then(response => response.json())
+      .then(data => { dataset = data; })
+      .catch(error => { console.error('Error loading dataset:', error); });
+    
+    function numberToCategory(num) {
+      if (num == 6 || num == 8) return "BR";
+      if (num == 5 || num == 7 || num == 9) return "BG";
+      if (num == 1 || num == 3) return "SG";
+      if (num == 2 || num == 4 || num == 0) return "SR";
+      return "";
+    }
+
+    function processData() { 
+      var searchValues = [];
+      for (var i = 1; i <= 6; i++) {
+        var val = document.getElementById("input" + i).value.trim();
+        if (val !== "") {
+          searchValues.push(numberToCategory(parseInt(val)));
+        }
+      }
+
+      if (searchValues.length !== 6) {
+        document.getElementById("result-box").innerText = "Please enter all values";
+        document.getElementById("category-percentages").innerText = "";
+        return;
+      }
+
+      var matchedResults = [];
+      for (var i = 0; i <= dataset.length - 7; i++) {
+        if (searchValues.every((v, idx) => dataset[i + idx] === v)) {
+          matchedResults.push(dataset[i + 6]);
+        }
+      }
+
+      if (matchedResults.length === 0) {
+        document.getElementById("result-box").innerText = "No results found";
+        document.getElementById("category-percentages").innerText = "";
+        return;
+      }
+ 
+      var countBR = matchedResults.filter(num => num === "BR").length;
+      var countBG = matchedResults.filter(num => num === "BG").length;
+      var countSG = matchedResults.filter(num => num === "SG").length;
+      var countSR = matchedResults.filter(num => num === "SR").length;
+
+      var total = matchedResults.length;
+
+      var percentBR = (countBR / total) * 25;
+      var percentBG = (countBG / total) * 75;
+      var percentSG = (countSG / total) * 50;
+      var percentSR = (countSR / total) * 80;
+
+      var maxPercent = Math.max(percentBR, percentBG, percentSG, percentSR);
+
+      var normalizedBR = (percentBR / maxPercent) * 25;
+      var normalizedBG = (percentBG / maxPercent) * 75;
+      var normalizedSG = (percentSG / maxPercent) * 50;
+      var normalizedSR = (percentSR / maxPercent) * 80;
+
+      var dominantCategory, dominantValue;
+      if (normalizedBR >= normalizedBG && normalizedBR >= normalizedSG && normalizedBR >= normalizedSR) {
+        dominantCategory = "[ðŸ”´]BIG[ðŸ”´] 	[â» â½]";
+        dominantValue = normalizedBR;
+      } else if (normalizedBG >= normalizedBR && normalizedBG >= normalizedSG && normalizedBG >= normalizedSR) {
+        dominantCategory = "[ðŸŸ¢]BIG[ðŸŸ¢] 	[âº â¼ â¾]";
+        dominantValue = normalizedBG;
+      } else if (normalizedSG >= normalizedBR && normalizedSG >= normalizedBG && normalizedSG >= normalizedSR) {
+        dominantCategory = "[ðŸŸ¢]SMALL[ðŸŸ¢] 	[â¶ â¸]";
+        dominantValue = normalizedSG;
+      } else if (normalizedSR >= normalizedBR && normalizedSR >= normalizedBG && normalizedSR >= normalizedSG) {
+        dominantCategory = "[ðŸ”´]SMALL[ðŸ”´]	 [â“¿ â· â¹]";
+        dominantValue = normalizedSR;		
+      }
+
+      var displayValue = dominantValue >= 70 ? 100 : dominantValue.toFixed(2);
+
+      document.getElementById("result-box").innerText = `${dominantCategory}`;
+      document.getElementById("category-percentages").innerText = `${displayValue}%`;
+    }
+  </script>
+</body>
+</html>
