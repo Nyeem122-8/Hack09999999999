@@ -113,7 +113,7 @@
   <script>
     var dataset = [];
 
-    fetch('data/dataset.json')
+    fetch('dataset.json')
       .then(response => response.json())
       .then(data => { dataset = data; })
       .catch(error => { console.error('Error loading dataset:', error); });
