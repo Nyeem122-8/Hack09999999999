@@ -113,7 +113,7 @@
   <script>
     var dataset = [];
 
-    fetch('dataset.json')
+    fetch('data/dataset.json')
       .then(response => response.json())
       .then(data => { dataset = data; })
       .catch(error => { console.error('Error loading dataset:', error); });
@@ -175,16 +175,16 @@
 
       var dominantCategory, dominantValue;
       if (normalizedBR >= normalizedBG && normalizedBR >= normalizedSG && normalizedBR >= normalizedSR) {
-        dominantCategory = "[ðŸ”´]BIG[ðŸ”´] 	[â» â½]";
+        dominantCategory = "[🔴]BIG[🔴] 	[6,8]";
         dominantValue = normalizedBR;
       } else if (normalizedBG >= normalizedBR && normalizedBG >= normalizedSG && normalizedBG >= normalizedSR) {
-        dominantCategory = "[ðŸŸ¢]BIG[ðŸŸ¢] 	[âº â¼ â¾]";
+        dominantCategory = "[🟢]BIG[🟢] 	[5,7,9]";
         dominantValue = normalizedBG;
       } else if (normalizedSG >= normalizedBR && normalizedSG >= normalizedBG && normalizedSG >= normalizedSR) {
-        dominantCategory = "[ðŸŸ¢]SMALL[ðŸŸ¢] 	[â¶ â¸]";
+        dominantCategory = "[🟢]SMALL[🟢] 	[1,3]";
         dominantValue = normalizedSG;
       } else if (normalizedSR >= normalizedBR && normalizedSR >= normalizedBG && normalizedSR >= normalizedSG) {
-        dominantCategory = "[ðŸ”´]SMALL[ðŸ”´]	 [â“¿ â· â¹]";
+        dominantCategory = "[🔴]SMALL[🔴]	 [0,2,4]";
         dominantValue = normalizedSR;		
       }
 
