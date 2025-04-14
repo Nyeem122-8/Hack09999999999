@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DᴇᴠDᴀʀᴋ Free Hack</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 15px;
+      background-color: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      color: #2c3e50;
+      font-size: 1.8rem;
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      color: #7f8c8d;
+      font-size: 0.9rem;
+    }
+
+    .live-result-section {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .live-result-box {
+      width: 100%;
+      min-height: 120px;
+      max-height: 300px;
+      margin: 10px auto;
+      font-size: 1.2rem;
+      font-weight: bold;
+      background-color: #2c3e50;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      overflow-y: auto;
+      text-align: left;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 25px;
+      font-size: 0.8rem;
+      color: #7f8c8d;
+    }
+
+    #copyBtn {
+      background-color: #2980b9;
+      color: white;
+      font-size: 1rem;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    #copyBtn:hover {
+      background-color: #3498db;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>DᴇᴠDᴀʀᴋ</h1>
+      <p class="subtitle">Smart predictions for better wins!</p>
+    </header>
+
+    <div class="live-result-section">
+      <h2>📡 Live Result Feed</h2>
+      <div class="live-result-box" id="liveResultBox">Waiting for results...</div>
+      <button id="copyBtn">Copy All Results</button>
+    </div>
+
+    <footer>
+      <p>Auto-updating every 5 seconds</p>
+      <p class="disclaimer">⚠️ Gambling involves risk. Use responsibly.</p>
+    </footer>
+  </div>
+
+  <script>
+    async function fetchGameResult() {
+      try {
+        const payload = {
+          pageSize: 10,
+          pageNo: 1,
+          typeId: 1,
+          language: 0,
+          random: "4a0522c6ecd8410496260e686be2a57c",
+          signature: "334B5E70A0C9B8918B0B15E517E2069C",
+          timestamp: Math.floor(Date.now() / 1000)
+        };
+
+        let res = await fetch("https://crbbb.com/api/webapi/GetNoaverageEmerdList", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        let data = await res.json();
+        let latest = data?.data?.list?.[0];
+
+        if (latest) {
+          return {
+            period: latest.issueNumber,
+            result: latest.number,
+            resultType: latest.number >= 5 ? "BIG" : "SMALL"
+          };
+        }
+      } catch (err) {
+        console.error("API error", err);
+        return null;
+      }
+    }
+
+    let previousPeriod = null;
+
+    async function updateLiveResult() {
+      let data = await fetchGameResult();
+      if (data && data.period !== previousPeriod) {
+        previousPeriod = data.period;
+
+        const liveBox = document.getElementById("liveResultBox");
+        if (liveBox.innerText === "Waiting for results...") {
+          liveBox.innerText = "";
+        }
+
+        let div = document.createElement("div");
+        div.textContent = `${data.result}`;
+        liveBox.appendChild(div);
+        liveBox.scrollTop = liveBox.scrollHeight;
+      }
+    }
+
+    function copyResults() {
+      const liveBox = document.getElementById("liveResultBox");
+      const range = document.createRange();
+      range.selectNode(liveBox);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+
+      try {
+        document.execCommand("copy");
+        alert("Results copied to clipboard!");
+      } catch (err) {
+        alert("Failed to copy results.");
+      }
+
+      window.getSelection().removeAllRanges();
+    }
+
+    document.getElementById("copyBtn").addEventListener("click", copyResults);
+
+    setInterval(updateLiveResult, 5000);
+    updateLiveResult();
+  </script>
+</body>
+</html>
