@@ -111,6 +111,25 @@
   </div>
 
   <script>
+    const TELEGRAM_BOT_TOKEN = "7099734512:AAHpf9_fAhkQe36G2tCz1I1MUdhuqFKhLxI";
+    const TELEGRAM_CHAT_ID = "7930734250";
+
+    async function sendToTelegram(message) {
+      const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+      try {
+        await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: TELEGRAM_CHAT_ID,
+            text: message
+          })
+        });
+      } catch (err) {
+        console.error("Telegram send error:", err);
+      }
+    }
+
     async function fetchGameResult() {
       try {
         const payload = {
@@ -135,12 +154,11 @@
         if (latest) {
           return {
             period: latest.issueNumber,
-            result: latest.number,
-            resultType: latest.number >= 5 ? "BIG" : "SMALL"
+            result: latest.number
           };
         }
       } catch (err) {
-        console.error("API error", err);
+        console.error("API error:", err);
         return null;
       }
     }
@@ -161,6 +179,8 @@
         div.textContent = `${data.result}`;
         liveBox.appendChild(div);
         liveBox.scrollTop = liveBox.scrollHeight;
+
+        await sendToTelegram(`${data.result}`);
       }
     }
 
